@@ -1,82 +1,72 @@
-# Q-Copy
+# q-copy 📋
 
-A lightweight CLI tool that allows you to quickly copy the contents of multiple files to your system clipboard. Q-Copy automatically detects your operating system (Windows, Linux, or macOS) and uses the appropriate clipboard mechanisms.
+> A lightning-fast CLI tool to copy multiple file contents to your clipboard
 
-## Features
+I found myself wishing I had a file where I could specify multiple files to copy to the clipboard.
+This helps me with quickly create context for LLMs.
+Hope you find it useful.
 
-- Cross-platform support for Windows, Linux, and macOS
-- Simple configuration with file paths listed at the top of the script
-- Sequential copying of multiple files with confirmation output
-- Helpful error messages if files can't be accessed or clipboard operations fail
-- Written in TypeScript for type safety and modern JavaScript features
+## ✨ Features
 
-## Installation
+- 🚀 Copy multiple files to clipboard in one command
+- 📄 Concatenates files with headers showing file paths
+- 🔄 Cross-platform support (Windows, macOS, Linux)
+- 🏠 Uses a global config file for easy access from anywhere
+
+## 🔧 Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/q-copy.git
-
-# Navigate to the project folder
+# Or install from source
+git clone https://github.com/yourusername/q-copy.git
 cd q-copy
-
-# Install dependencies
 npm install
+npm run install-global
 ```
 
-## Usage
+## 🚀 Usage
 
-1. Edit the file paths in the `src/index.ts` file
-2. Build and run the script:
+Simply run:
 
 ```bash
-# Build the TypeScript project
-npm run build
-
-# Run the script
-npm start
+q-copy
 ```
 
-### Requirements
+The first time you run the command, it will create a `.q-copy.json` configuration file in your home directory.
 
-- **Windows**: No additional requirements (uses PowerShell)
-- **Linux**: Requires `xclip` to be installed
-  ```bash
-  # Ubuntu/Debian
-  sudo apt-get install xclip
-  
-  # Fedora
-  sudo dnf install xclip
-  ```
-- **macOS**: No additional requirements (uses pbcopy)
+## ⚙️ Configuration
 
-## Example
+Edit the config file at `~/.q-copy.json`:
 
-```typescript
-// Edit the file paths at the top of the script
-private readonly filePaths: string[] = [
-    './src/index.ts',
-    './README.md',
-    './package.json'
-];
+```json
+{
+  "filePaths": [
+    "/path/to/file1.txt",
+    "/path/to/file2.js",
+    "/path/to/file3.md"
+  ]
+}
 ```
 
-## Development
+Alternatively, you can use a `.env` file in your current directory:
 
-```bash
-# Install dependencies
-npm install
-
-# Run in development mode
-npm run dev
-
-# Build
-npm run build
+```
+FILE_PATHS=/path/to/file1.txt, /path/to/file2.js, /path/to/file3.md
 ```
 
-## License
+## 📋 Output Format
 
-MIT
+Files are copied to your clipboard with the following format:
 
----
+```
+/path/to/file1.txt
+Content of file 1
 
+/path/to/file2.js
+Content of file 2
+
+/path/to/file3.md
+Content of file 3
+```
+
+Made with love,
 Marcus Shepherd
