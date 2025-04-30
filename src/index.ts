@@ -73,6 +73,7 @@ class ClipboardManager {
             const errorMessage: string = error instanceof Error 
                 ? error.message 
                 : String(error);
+                
             console.error(`Warning: Failed to save configuration: ${errorMessage}`);
         }
     }
@@ -89,6 +90,9 @@ class ClipboardManager {
         try {
             const concatenatedContent: string = this.concatenateFileContents();
             this.copyToClipboard(concatenatedContent);
+            for (let i = 0; i < this.filePaths.length; i++) {
+                console.log(`File path ${i + 1}: ${this.filePaths[i]}`);
+            }
             console.log('All file contents concatenated and copied to clipboard.');
         } catch (error: unknown) {
             if (error instanceof Error) {
