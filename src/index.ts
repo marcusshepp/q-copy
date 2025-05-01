@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 
 class ClipboardManager {
     private filePaths: string[] = [];
+    private prompt: string = "";
     private readonly platform: string = os.platform();
     private readonly configFile: string = path.join(os.homedir(), '.q-copy.json');
 
@@ -21,6 +22,7 @@ class ClipboardManager {
             if (fs.existsSync(this.configFile)) {
                 const config = JSON.parse(fs.readFileSync(this.configFile, 'utf8'));
                 this.filePaths = config.filePaths || [];
+                this.prompt = config.prompt || "";
                 
                 if (this.filePaths.length > 0) {
                     return;
@@ -106,6 +108,8 @@ class ClipboardManager {
 
     private concatenateFileContents(): string {
         const contents: string[] = [];
+
+        contents.push(this.prompt + '\n\n');
         
         for (const filePath of this.filePaths) {
             try {
