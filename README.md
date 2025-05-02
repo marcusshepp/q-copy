@@ -17,7 +17,7 @@ Hope you find it useful.
 
 ```bash
 # Or install from source
-git clone https://github.com/yourusername/q-copy.git
+git clone https://github.com/marcusshepp/q-copy.git
 cd q-copy
 npm install
 npm run install-global
