@@ -1,6 +1,4 @@
 import { Command } from 'commander';
-import * as path from 'path';
-import * as os from 'os';
 import clipboard from 'clipboardy';
 import { ConfigManager } from './config';
 import { FileManager } from './file-manager';
