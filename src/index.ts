@@ -1,25 +1,63 @@
-import clipboard from 'clipboardy';
-import { readConfig } from './utils';
+#!/usr/bin/env node
 
-const configFile: string = `${process.env.HOME}/.q-copy.json`;
-const { filePaths } = readConfig(configFile);
+import { CLI } from './cli';
+import { logger } from './logger';
+import { QCopyError } from './errors';
 
-if (filePaths.length === 0) {
-    console.error('No file paths found. Use `q-copy add <path>` to add some.');
-    process.exit(1);
-}
-
-const fs = require('fs');
-let content = '';
-
-for (const filePath of filePaths) {
+async function main(): Promise<void> {
     try {
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        content += fileContent + '\n';
-    } catch (err) {
-        console.error(`Error reading ${filePath}:`, err.message);
+        const cli: CLI = new CLI();
+        await cli.run(process.argv);
+    } catch (error: unknown) {
+        if (error instanceof QCopyError) {
+            console.error(`Error: ${error.message}`);
+            logger.error('Application error', error);
+            process.exit(1);
+        } else if (error instanceof Error) {
+            console.error(`Unexpected error: ${error.message}`);
+            logger.error('Unexpected error', error);
+            process.exit(1);
+        } else {
+            console.error(`Unknown error: ${String(error)}`);
+            logger.error('Unknown error', { error });
+            process.exit(1);
+        }
     }
 }
 
-clipboard.writeSync(content.trim());
-console.log('Copied contents of all files to clipboard.');
+process.on('uncaughtException', (error: Error) => {
+    console.error('Uncaught Exception:', error.message);
+    logger.error('Uncaught Exception', error);
+    process.exit(1);
+});
+
+process.on('unhandledRejection', (reason: unknown, promise: Promise<any>) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    logger.error('Unhandled Rejection', { reason, promise });
+    process.exit(1);
+});
+
+process.on('SIGINT', () => {
+    console.log('\nReceived SIGINT. Gracefully shutting down...');
+    logger.info('Application interrupted by user');
+    process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+    console.log('\nReceived SIGTERM. Gracefully shutting down...');
+    logger.info('Application terminated');
+    process.exit(0);
+});
+
+if (require.main === module) {
+    main();
+}
+
+export { CLI } from './cli';
+export { ConfigManager } from './config';
+export { FileManager } from './file-manager';
+export { Logger, logger } from './logger';
+export { Validator } from './validator';
+export * from './types';
+export * from './errors';
+export * from './utils';
