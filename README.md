@@ -1,3 +1,10 @@
+Here’s the updated `README.md` with instructions on how to use the new CLI interface:
+
+---
+
+### `README.md`
+
+````md
 # q-copy 📋
 
 > A lightning-fast CLI tool to copy multiple file contents to your clipboard
@@ -10,63 +17,70 @@ Hope you find it useful.
 
 - 🚀 Copy multiple files to clipboard in one command
 - 📄 Concatenates files with headers showing file paths
-- 🔄 Cross-platform support (Windows, macOS, Linux)
+- 🔄 Cross-platform support (Windows, macOS, Linux, WSL2)
 - 🏠 Uses a global config file for easy access from anywhere
+- ⚙️ Easily manage which files are included with CLI commands
 
 ## 🔧 Installation
 
 ```bash
-# Or install from source
 git clone https://github.com/marcusshepp/q-copy.git
 cd q-copy
 npm install
 npm run install-global
-```
+````
 
 ## 🚀 Usage
 
-Simply run:
+After installing globally, you can use `q-copy` in the terminal:
+
+### Copy contents of configured files
 
 ```bash
 q-copy
 ```
 
-The first time you run the command, it will create a `.q-copy.json` configuration file in your home directory.
+### Show current file paths
+
+```bash
+q-copy ls
+```
+
+### Add a file path
+
+```bash
+q-copy add /absolute/path/to/file.txt
+```
+
+### Remove a file path
+
+```bash
+q-copy rm /absolute/path/to/file.txt
+```
 
 ## ⚙️ Configuration
 
-Edit the config file at `~/.q-copy.json`:
+`q-copy` uses a JSON config stored at `~/.q-copy.json`. You can manage this config with the built-in commands.
+
+Or, manually edit:
 
 ```json
 {
   "filePaths": [
     "/path/to/file1.txt",
-    "/path/to/file2.js",
-    "/path/to/file3.md"
+    "/path/to/file2.js"
   ]
 }
 ```
 
-Alternatively, you can use a `.env` file in your current directory:
-
-```
-FILE_PATHS=/path/to/file1.txt, /path/to/file2.js, /path/to/file3.md
-```
-
 ## 📋 Output Format
 
-Files are copied to your clipboard with the following format:
+When copying, it concatenates all file contents and puts them in your clipboard.
 
-```
-/path/to/file1.txt
-Content of file 1
-
-/path/to/file2.js
-Content of file 2
-
-/path/to/file3.md
-Content of file 3
-```
+---
 
 Made with love,
 Marcus Shepherd
+
+```
+```
