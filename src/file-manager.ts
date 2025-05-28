@@ -124,7 +124,6 @@ export class FileManager {
     private formatAsXML(fileContents: FileContent[], includeHeaders: boolean): string {
         const files: string = fileContents.map((file: FileContent) => {
             const escapedPath: string = this.escapeXML(file.path);
-            const escapedContent: string = this.escapeXML(file.content);
             
             if (includeHeaders) {
                 return `  <file path="${escapedPath}" size="${file.size}" lastModified="${file.lastModified.toISOString()}">\n    <content><![CDATA[${file.content}]]></content>\n  </file>`;

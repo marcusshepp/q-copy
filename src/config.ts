@@ -3,7 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import { Config, OutputFormat } from './types';
-import { ConfigError, ValidationError } from './errors';
+import { ConfigError } from './errors';
 import { Validator } from './validator';
 import { FileManager } from './file-manager';
 import { logger } from './logger';
@@ -105,7 +105,12 @@ export class ConfigManager {
             return false;
         }
         
-        const removedPath: string = config.filePaths[index];
+        const removedPath: string | undefined = config.filePaths[index];
+        if (!removedPath) {
+            logger.warn(`No path found at index: ${index}`);
+            return false;
+        }
+        
         config.filePaths.splice(index, 1);
         this.saveConfig(config);
         
@@ -181,7 +186,7 @@ export class ConfigManager {
     private loadFromEnvironment(): Config {
         dotenv.config();
 
-        const filePathsString: string | undefined = process.env.FILE_PATHS;
+        const filePathsString: string | undefined = process.env['FILE_PATHS'];
         const config: Config = this.getDefaultConfig();
 
         if (filePathsString) {

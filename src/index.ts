@@ -59,5 +59,15 @@ export { FileManager } from './file-manager';
 export { Logger, logger } from './logger';
 export { Validator } from './validator';
 export * from './types';
-export * from './errors';
+export {
+    QCopyError,
+    ConfigError,
+    FileError as FileErrorClass,
+    ValidationError,
+    ClipboardError,
+    PathError,
+    isQCopyError,
+    getErrorMessage,
+    getErrorCode
+} from './errors';
 export * from './utils';
