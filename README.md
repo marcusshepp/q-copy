@@ -9,17 +9,13 @@ A professional-grade command-line utility designed for developers who need to qu
 - 🚀 **Lightning Fast**: Copy multiple files to clipboard in milliseconds
 - 📄 **Multiple Output Formats**: Plain text, Markdown, and XML formatting
 - 🛡️ **Robust Error Handling**: Comprehensive validation and error recovery
-- 🔍 **File Validation**: Automatic file existence, readability, and size checks
-- 📊 **Progress Reporting**: Detailed feedback on file processing and sizes
-- 🏠 **Global Configuration**: Uses `~/.q-copy.json` for persistent settings
-- ⚙️ **Flexible CLI**: Intuitive commands for managing file lists
-- 🔧 **TypeScript**: Fully typed for reliability and maintainability
-- 📝 **Smart Headers**: Optional file metadata in output
+- 🌟 **Pattern Matching**: Support for glob patterns like `*.js`, `**/*.ts`
+- 📁 **Directory Support**: Recursively add all files from directories
+- 🗑️ **Advanced Removal**: Remove files by ranges (1-5) or multiple indices (1 2 3)
 - 🎯 **Cross-Platform**: Works on Windows, macOS, Linux, and WSL2
 
 ## 🔧 Installation
 
-### Global Installation (Recommended)
 ```bash
 git clone https://github.com/marcusshepp/q-copy.git
 cd q-copy
@@ -27,97 +23,67 @@ npm install
 npm run install-global
 ```
 
-### Development Installation
-```bash
-git clone https://github.com/marcusshepp/q-copy.git
-cd q-copy
-npm install
-npm run build
-```
-
 ## 🚀 Usage
 
-### Basic Commands
+### Copy Files
 
-#### Copy Files to Clipboard
 ```bash
 # Copy all configured files (default command)
 q-copy
-q-copy copy
+
+# Copy with different formats
+q-copy --format markdown
+q-copy --format xml
 
 # Copy with verbose output
 q-copy -v
-
-# Copy in different formats
-q-copy --format markdown
-q-copy --format xml
-q-copy --format plain
-
-# Copy without file headers
-q-copy --no-headers
 ```
 
-#### Manage File Paths
+### Add Files
+
 ```bash
-# List current file paths with status
-q-copy ls
-q-copy list
-
-# Add single or multiple file paths
+# Add single file
 q-copy add /path/to/file.txt
-q-copy add ./src/index.ts ./src/config.ts ./README.md
+q-copy a /path/to/file.txt  # Short alias
 
-# Remove by index (1-based)
-q-copy rm 1
-q-copy remove 3
+# Add multiple files and patterns
+q-copy a *.json src/**/*.ts docs/
+
+# Add directories (recursive)
+q-copy a ./src/ ./tests/
+```
+
+### Remove Files
+
+```bash
+# List current files with indices
+q-copy ls
+
+# Remove by range
+q-copy rm 1-5        # Remove files 1 through 5
+
+# Remove specific files
+q-copy rm 1 3 5      # Remove files 1, 3, and 5
+
+# Mix ranges and indices
+q-copy rm 1-3 7 9-11 # Remove files 1-3, 7, and 9-11
 
 # Remove by file path
 q-copy rm /path/to/file.txt
 ```
 
-#### Configuration Management
+### Other Commands
+
 ```bash
-# Show configuration details
-q-copy config
-
-# Validate current configuration
-q-copy validate
-
-# Reset configuration to defaults
-q-copy reset
-```
-
-### Advanced Usage
-
-#### Global Options
-```bash
-# Verbose mode - detailed output
-q-copy -v copy
-
-# Quiet mode - suppress non-error output
-q-copy -q copy
-
-# Combine options
-q-copy -v --format markdown --no-headers
-```
-
-#### File Path Management
-```bash
-# Add multiple files at once
-q-copy add ~/Documents/*.md ./src/**/*.ts
-
-# Remove multiple files by index
-q-copy rm 1
-q-copy rm 2
-q-copy rm 3
-
-# View file status and sizes
-q-copy ls
+q-copy config        # Show configuration
+q-copy validate      # Validate current setup
+q-copy reset         # Reset to defaults
 ```
 
 ## 📋 Output Formats
 
 ### Plain Text (Default)
+
 ```
 ================================================================================
 File: /path/to/file.txt
@@ -129,157 +95,106 @@ Last Modified: 2024-01-15T10:30:00.000Z
 ```
 
 ### Markdown
-```markdown
+
+````markdown
 ## filename.txt
 
 **Path:** `/path/to/file.txt`
 **Size:** 1234 bytes
-**Last Modified:** 2024-01-15T10:30:00.000Z
 
 ```txt
 [file contents here]
 ```
-```
+````
 
 ### XML
+
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
 <files>
-  <file path="/path/to/file.txt" size="1234" lastModified="2024-01-15T10:30:00.000Z">
+  <file path="/path/to/file.txt" size="1234">
     <content><![CDATA[[file contents here]]]></content>
   </file>
 </files>
 ```
 
+## 🌟 Pattern Examples
+
+```bash
+# TypeScript files
+q-copy a src/**/*.ts
+
+# Multiple file types
+q-copy a *.{js,ts,json}
+
+# Configuration files
+q-copy a *.json *.yaml .env*
+
+# Test files
+q-copy a **/*.test.js **/*.spec.ts
+
+# Everything in src directory
+q-copy a src/
+```
+
+## 🗑️ Removal Examples
+
+```bash
+# Remove first 5 files
+q-copy rm 1-5
+
+# Remove specific files
+q-copy rm 2 4 6 8
+
+# Complex removal
+q-copy rm 1-3 8 12-15 20
+
+# Mix with file paths
+q-copy rm 1-5 /specific/file.txt 10-12
+```
+
 ## ⚙️ Configuration
 
-q-copy uses a JSON configuration file stored at `~/.q-copy.json`:
+Configuration is stored at `~/.q-copy.json`:
 
 ```json
 {
-  "filePaths": [
-    "/absolute/path/to/file1.txt",
-    "~/relative/path/to/file2.js",
-    "./project/file3.md"
-  ],
-  "outputFormat": "plain",
-  "includeHeaders": true,
-  "prompt": ""
+    "filePaths": ["/path/to/file1.txt", "~/file2.js"],
+    "outputFormat": "plain",
+    "includeHeaders": true
 }
 ```
 
-### Configuration Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `filePaths` | `string[]` | `[]` | Array of file paths to include |
-| `outputFormat` | `string` | `"plain"` | Output format: `plain`, `markdown`, or `xml` |
-| `includeHeaders` | `boolean` | `true` | Include file metadata headers |
-| `prompt` | `string` | `""` | Optional prompt text (reserved for future use) |
-
-## 🛡️ Error Handling & Validation
-
-q-copy includes comprehensive error handling:
-
-- **File Validation**: Checks file existence, readability, and size limits
-- **Path Validation**: Validates and normalizes file paths
-- **Configuration Validation**: Ensures valid JSON and required fields
-- **Clipboard Errors**: Handles clipboard access failures gracefully
-- **Detailed Logging**: Optional verbose output for debugging
-
-### File Size Limits
-- Maximum individual file size: **50MB**
-- Files exceeding the limit will be skipped with a warning
-
-### Path Handling
-- Supports `~` expansion for home directory
-- Automatically normalizes paths across platforms
-- Validates against invalid characters
-
 ## 🔍 Troubleshooting
 
-### Common Issues
+**No files configured:**
 
-**"No file paths configured"**
 ```bash
-q-copy add /path/to/your/file.txt
+q-copy a /path/to/your/files
 ```
 
-**"File not found" errors**
+**Invalid indices:**
+
 ```bash
-q-copy validate  # Check which files are missing
-q-copy ls        # View current status of all files
+q-copy ls        # Check current file indices
 ```
 
-**Configuration issues**
+**Pattern issues:**
+
 ```bash
-q-copy config    # View current configuration
-q-copy reset     # Reset to defaults if corrupted
+q-copy -v a *.txt  # Use verbose mode
 ```
 
-**Clipboard access issues**
-- Ensure your system has clipboard access permissions
-- On Linux, you may need `xclip` or `xsel` installed
-
-### Enable Verbose Logging
-```bash
-q-copy -v copy   # See detailed processing information
-```
-
-### View Configuration
-```bash
-q-copy config    # Shows config file location and current settings
-```
-
-## 🔄 Migration from v0.x
-
-If you're upgrading from an earlier version:
-
-1. Your existing `~/.q-copy.json` will be automatically migrated
-2. Environment variable configuration (`.env`) will be imported on first run
-3. The new CLI interface replaces the old separate config script
-
-## 🚀 Performance
-
-- **Startup Time**: < 100ms for typical configurations
-- **File Processing**: Handles hundreds of files efficiently
-- **Memory Usage**: Optimized for large file collections
-- **Size Reporting**: Real-time progress with file sizes and timing
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes with proper TypeScript typing
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📝 Development
+**Configuration problems:**
 
 ```bash
-# Install dependencies
-npm install
-
-# Development mode with auto-restart
-npm run dev
-
-# Build for production
-npm run build
-
-# Clean build artifacts
-npm run clean
+q-copy config    # View current settings
+q-copy reset     # Reset if needed
 ```
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
-
-## 🙏 Acknowledgments
-
-Built with TypeScript, Commander.js, and clipboardy for reliable cross-platform clipboard access.
+MIT License
 
 ---
 
 **Made with ❤️ by Marcus Shepherd**
-
-For issues, feature requests, or contributions, visit the [GitHub repository](https://github.com/marcusshepp/q-copy).

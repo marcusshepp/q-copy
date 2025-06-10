@@ -1,56 +1,54 @@
 {
-  "name": "q-copy",
-  "version": "1.0.0",
-  "description": "A robust CLI tool to copy multiple file contents to system clipboard",
-  "main": "dist/index.js",
-  "bin": {
-    "q-copy": "./dist/index.js"
-  },
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "install-global": "npm run build && npm install -g .",
-    "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
-    "prepare": "npm run build"
-  },
-  "keywords": [
-    "clipboard",
-    "copy",
-    "files",
-    "cli",
-    "typescript",
-    "file-manager",
-    "developer-tools"
-  ],
-  "author": "Marcus Shepherd",
-  "license": "MIT",
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0"
-  },
-  "dependencies": {
-    "@types/node": "^18.19.31",
-    "clipboardy": "^4.0.0",
-    "commander": "^14.0.0",
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
-  },
-  "files": [
-    "dist/**/*",
-    "README.md",
-    "LICENSE"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/marcusshepp/q-copy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/marcusshepp/q-copy/issues"
-  },
-  "homepage": "https://github.com/marcusshepp/q-copy#readme"
+    "name": "q-copy",
+    "version": "1.0.0",
+    "description": "A robust CLI tool to copy multiple file contents to system clipboard",
+    "main": "dist/index.js",
+    "bin": {
+        "q-copy": "./dist/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "dev": "ts-node src/index.ts",
+        "install-global": "npm run build && npm install -g .",
+        "clean": "rm -rf dist",
+        "prebuild": "npm run clean",
+        "prepare": "npm run build"
+    },
+    "keywords": [
+        "clipboard",
+        "copy",
+        "files",
+        "cli",
+        "typescript",
+        "file-manager",
+        "developer-tools"
+    ],
+    "author": "Marcus Shepherd",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    },
+    "dependencies": {
+        "@types/node": "^18.19.31",
+        "clipboardy": "^4.0.0",
+        "commander": "^14.0.0",
+        "dotenv": "^16.4.5",
+        "glob": "^10.3.10"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.4.5"
+    },
+    "files": ["dist/**/*", "README.md", "LICENSE"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/marcusshepp/q-copy.git"
+    },
+    "bugs": {
+        "url": "https://github.com/marcusshepp/q-copy/issues"
+    },
+    "homepage": "https://github.com/marcusshepp/q-copy#readme"
 }

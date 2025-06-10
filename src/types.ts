@@ -31,17 +31,22 @@ export interface ValidationResult {
     warnings: string[];
 }
 
+export interface ParsedRange {
+    indices: number[];
+    invalidInputs: string[];
+}
+
 export enum OutputFormat {
     PLAIN = 'plain',
     MARKDOWN = 'markdown',
-    XML = 'xml'
+    XML = 'xml',
 }
 
 export enum LogLevel {
     ERROR = 'error',
     WARN = 'warn',
     INFO = 'info',
-    DEBUG = 'debug'
+    DEBUG = 'debug',
 }
 
 export interface LoggerOptions {
